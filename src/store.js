@@ -3,7 +3,7 @@
  */
 class Store {
   constructor(initState = {}) {
-    this.state = initState;
+    this.state = { ...initState, index: initState.list.length };
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -44,7 +44,8 @@ class Store {
   addItem() {
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: this.state.list.length + 1, title: 'Новая запись'}]
+      index: this.state.index + 1,
+      list: [...this.state.list, {code: this.state.index + 1, title: 'Новая запись'}],
     })
   };
 
@@ -66,13 +67,18 @@ class Store {
   selectItem(code) {
     this.setState({
       ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          item.selected = !item.selected;
-        }
-        return item;
+      list: this.state.list.map((value) => {
+          if (value.code === code)
+          {
+            let clickedResult = !!!value.selected;
+            value.selected = clickedResult;
+            value.click = clickedResult ? value.click === undefined ? 1 : value.click + 1 : value.click;
+          }
+          else 
+            value.selected = false;
+          return value;
       })
-    })
+    });
   }
 }
 

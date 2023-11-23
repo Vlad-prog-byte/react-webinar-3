@@ -11,6 +11,19 @@ function App({store}) {
 
   const list = store.getState().list;
 
+  const infoClick = (clicked) => {
+    if (clicked === 0 || clicked === undefined)
+      return;
+    else {
+      let remains = clicked % 100;
+      if ([2, 3, 4].includes(remains) || (remains >= 20 && [2, 3, 4].includes(remains % 10)))
+        return `| Выделяли ${clicked} раза`;
+      else
+        return  `| Выделяли ${clicked} раз`;
+  
+    }
+  } 
+
   return (
     <div className='App'>
       <div className='App-head'>
@@ -26,7 +39,7 @@ function App({store}) {
               <div className={'Item' + (item.selected ? ' Item_selected' : '')}
                    onClick={() => store.selectItem(item.code)}>
                 <div className='Item-code'>{item.code}</div>
-                <div className='Item-title'>{item.title}</div>
+                <div className='Item-title'>{item.title} {infoClick(item.click)}</div>
                 <div className='Item-actions'>
                   <button onClick={() => store.deleteItem(item.code)}>
                     Удалить

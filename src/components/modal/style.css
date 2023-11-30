@@ -1,0 +1,20 @@
+.Modal {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Modal-content {
+    border-radius: 10px 10px 10px 10px;
+    width: 960px;
+    background: rgba(255, 255, 255, 1);
+    display: flex;
+    /* gap: 70px; */
+    flex-direction: column;
+}

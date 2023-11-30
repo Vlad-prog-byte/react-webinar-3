@@ -17,6 +17,19 @@ export function plural(value, variants = {}, locale = 'ru-RU') {
 }
 
 /**
+ * Подсчет общей суммы корзины
+ * @param trash Map наша корзина
+ * @returns Number
+ */
+export function counting(trash) {
+  let sumPrice = 0;
+        for (let [key, value] of trash) {
+            sumPrice += value.price * value.count; 
+  }
+  return sumPrice;
+}
+
+/**
  * Генератор чисел с шагом 1
  * Вариант с замыканием на начальное значение в самовызываемой функции.
  * @returns {Number}

@@ -1,14 +1,11 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-import {plural} from "../../utils";
-import './style.css';
 
-function Item(props) {
-
+function ItemTrash(props) {
   const callbacks = {
     onClick: (e) => {
       e.stopPropagation();
-      props.onClick(props.item.code);
+      props.onClick(props.item.title);
     },
   }
 
@@ -22,26 +19,30 @@ function Item(props) {
       <div className='Item-price'>
         {props.item.price}&nbsp;₽
       </div>
+      <div className='Item-price'>
+        {props.item.count}&nbsp;шт
+      </div>
       <div className="Item-action">
         <button onClick={ callbacks.onClick }>
-          Добавить
+          Удалить
         </button>
       </div>
     </div>
   );
 }
 
-Item.PropTypes = {
+ItemTrash.PropTypes = {
   item: PropTypes.shape({
+    title: PropTypes.title,
     code: PropTypes.number,
-    title: PropTypes.string,
+    count: PropTypes.number,
     price: PropTypes.number
   }).isRequired,
   onClick: PropTypes.func
 }
 
-Item.defaultProps = {
+ItemTrash.defaultProps = {
   onClick: () => {}
 }
 
-export default React.memo(Item);
+export default React.memo(ItemTrash);

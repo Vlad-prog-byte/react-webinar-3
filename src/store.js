@@ -5,7 +5,7 @@ import {generateCode} from "./utils";
  */
 class Store {
   constructor(initState = {}) {
-    this.state = initState;
+    this.state = { ...initState, trash: new Map() }
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -41,48 +41,39 @@ class Store {
   }
 
   /**
-   * Добавление новой записи
+   * Добавление товара в корзину
+   * @param code Код товара
    */
-  addItem() {
+  addItem(code) {
+    let trash = this.state.trash;
+    let item = this.state.list.filter(value => value.code === code)[0];
+    let title = item.title, price = item.price;
+
+    if (trash.has(title)) {
+      let { count, price } = trash.get(title);
+      trash.set(title, {count: count + 1, price, code: code});
+    }
+    else 
+      trash.set(title, {count : 1, price: price, code: code});
+
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: generateCode(), title: 'Новая запись'}]
-    })
+      trash: new Map(trash)
+    });
   };
 
-  /**
-   * Удаление записи по коду
-   * @param code
+    /**
+   * Добавление товара в корзину
+   * @param title  Описание товара
    */
-  deleteItem(code) {
+  deleteItem(title) {
+    let trash = this.state.trash;
+    trash.delete(title);
     this.setState({
       ...this.state,
-      // Новый список, в котором не будет удаляемой записи
-      list: this.state.list.filter(item => item.code !== code)
+      trash: new Map(trash)
     })
   };
-
-  /**
-   * Выделение записи по коду
-   * @param code
-   */
-  selectItem(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          // Смена выделения и подсчёт
-          return {
-            ...item,
-            selected: !item.selected,
-            count: item.selected ? item.count : item.count + 1 || 1,
-          };
-        }
-        // Сброс выделения если выделена
-        return item.selected ? {...item, selected: false} : item;
-      })
-    })
-  }
 }
 
 export default Store;
